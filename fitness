@@ -1,0 +1,94 @@
+import java.util.Scanner;
+
+public class Main {
+
+  public static void main(String[] args) {
+    Scanner input = new Scanner(System.in);
+
+    // Ask user for name and introduce application
+    System.out.print("Welcome to the Fitness Tracker! What is your name? ");
+    String name = input.nextLine();
+    System.out.println("Hello " + name
+        + ". With this application, you can keep track of your exercise progress, overload your workouts, and receive recommendations for workout plans.");
+
+    // Create variables to store exercise data
+    int sets;
+    int reps;
+    int weight;
+    int caloriesBurned = 0;
+    int targetWeight;
+    int targetReps;
+
+    while (true) {
+      // Ask user for workout day
+      System.out.print("\nWhich day is it today? (push/pull/legs/exit) ");
+      String workoutDay = input.nextLine();
+
+      if (workoutDay.equalsIgnoreCase("exit")) {
+        System.out.println("Thank you for using the Fitness Tracker. Goodbye!");
+        break;
+      }
+
+   
+      System.out.println("\nHere is your " + workoutDay + " day workout plan:");
+
+      if (workoutDay.equalsIgnoreCase("push")) {
+        // Push Day Exercises
+        System.out.println("Exercise 1 - Bench press");
+        targetWeight = 135;
+        targetReps = 10;
+        int[] benchPress = new int[3]; // Modify to 3 sets
+        System.out.println("Goal Sets: " + benchPress.length);
+        for (int i = 0; i < benchPress.length; i++) {
+          System.out.print("Set " + (i + 1) + " reps: ");
+          reps = input.nextInt();
+          System.out.print("Set " + (i + 1) + " weight: ");
+          weight = input.nextInt();
+          benchPress[i] = reps;
+          caloriesBurned += calculateCaloriesBurned(weight, reps);
+        }
+        input.nextLine(); // Consume the remaining newline character
+
+        // Progressively overload the workout
+        System.out.print(
+            "Excellent work! Would you like to increase your weight or reps for the next workout? (weight/reps/none) ");
+        String overload = input.nextLine();
+        if (overload.equalsIgnoreCase("weight")) {
+          targetWeight += 5;
+          System.out.println("Great! Your new target weight for bench press is " + targetWeight + " lbs.");
+        } else if (overload.equalsIgnoreCase("reps")) {
+          targetReps += 1;
+          System.out.println("Great! Your new target reps for bench press is " + targetReps + ".");
+        } else {
+          System.out.println("That's okay! You're doing great!");
+        }
+
+        // Provide user with compliments and encouragement
+        System.out.println("Awesome work on your bench press today! You burned an estimated " + caloriesBurned + " calories.");
+        System.out.println("Don't forget to stretch and hydrate before your next workout!");
+      } else if (workoutDay.equalsIgnoreCase("pull")) {
+        // Rest of the code for pull day
+        // ...
+      } else if (workoutDay.equalsIgnoreCase("legs")) {
+        // Rest of the code for leg day
+        // ...
+      } else {
+        System.out.println("Invalid workout day entered. Please choose either push, pull, legs, or exit to quit.");
+      }
+    }
+  }
+
+  public static int calculateCaloriesBurned(int weight, int reps) {
+   
+    // Constants for the formula
+    double MET = 6.0;  // Metabolic Equivalent of Task for bench press
+    double caloriesPerMinute = 0.0175;  // Calories burned per minute per kilogram of body weight
+
+    // Calculate calories burned using the formula
+    double bodyWeight = weight / 2.20462;  // Convert weight from pounds to kilograms
+    double caloriesPerRep = MET * caloriesPerMinute * bodyWeight;
+    int totalCaloriesBurned = (int) (caloriesPerRep * reps);
+
+    return totalCaloriesBurned;
+  }
+}
